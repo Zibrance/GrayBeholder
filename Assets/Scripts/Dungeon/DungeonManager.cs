@@ -1,8 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Unity.Collections;
-using UnityEngine.Tilemaps;
-
 public class DungeonManager : MonoBehaviour
 {
     public int width = 100;
@@ -26,7 +23,7 @@ public class DungeonManager : MonoBehaviour
     {
         SpawnDungeon();
         var player = Instantiate(playerPrefab);
-        player.Initialize(this, entryPoint);
+        player.Initialize(this, entryPoint, FindAnyObjectByType<Compass>());
         sceneCamera.transform.SetParent(player.transform);
         sceneCamera.transform.localPosition = new Vector3(0, 1f, 0);
         sceneCamera.transform.localRotation = Quaternion.identity;
