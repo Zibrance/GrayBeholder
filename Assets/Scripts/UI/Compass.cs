@@ -1,9 +1,19 @@
-using System.Security.Cryptography.X509Certificates;
+using System.Runtime.InteropServices;
 using Unity.Mathematics;
 using UnityEngine;
 
 public class Compass : MonoBehaviour
 {
+    public delegate void ChanceDirEventHandler(Direction dir);
+    public event ChanceDirEventHandler OnChechedDir;
+
+    public void RaiseOnChechedDir(Direction dir)
+    {
+        OnChechedDir.Invoke(dir);
+    }
+
+    public void Start() => OnChechedDir += ChanceCompassDir;
+    
 
     public void ChanceCompassDir(Direction dir)
     {

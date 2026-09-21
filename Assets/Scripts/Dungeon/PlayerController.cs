@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
         Vector2Int dirVector = DirectionUtils.ToVector(facing);
         Vector3 lookDirection = new Vector3(dirVector.x, 0, dirVector.y);
         transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
-        compass.ChanceCompassDir(facing);
+        compass.RaiseOnChechedDir(facing);
     }
 }
 
