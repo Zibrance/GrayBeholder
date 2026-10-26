@@ -1,11 +1,15 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Character
 {
+    [Range(0,10)]public float moveSpeed=1;
     private DungeonManager dungeonManager;
     private Vector2Int gridPosition;
     private Direction facing = Direction.North;
+     Quaternion newRotation;
+     Vector3 newPosition;
+     float moveProgress=1;
 
     private Compass compass;
 
@@ -15,11 +19,20 @@ public class PlayerController : MonoBehaviour
         gridPosition = startPosition;
         compass = uicompass;
         transform.position = new Vector3(gridPosition.x, 0, gridPosition.y);
+        newPosition=transform.position;
+        newRotation=transform.rotation;
         UpdateRotation();
     }
 
     void Update()
     {
+        if (moveProgress<1)
+        {
+            moveProgress+=Time.deltaTime*moveSpeed;
+            transform.position=Vector3.Lerp(transform.position,newPosition,moveProgress);
+            transform.rotation=Quaternion.Lerp(transform.rotation,newRotation,moveProgress);
+        }
+        
         var keyboard = Keyboard.current;
         if (keyboard == null) return;   // intet tastatur fundet - undgår NullReferenceException
 
@@ -48,7 +61,12 @@ public class PlayerController : MonoBehaviour
         if (dungeonManager.IsWalkable(target))
         {
             gridPosition = target;
-            transform.position = new Vector3(gridPosition.x, 0, gridPosition.y);
+            if (new Vector3(gridPosition.x, 0, gridPosition.y)!=newPosition)
+            {
+                newPosition = new Vector3(gridPosition.x, 0, gridPosition.y);
+                moveProgress=0;
+            }
+            
         }
     }
 
@@ -56,7 +74,11 @@ public class PlayerController : MonoBehaviour
     {
         Vector2Int dirVector = DirectionUtils.ToVector(facing);
         Vector3 lookDirection = new Vector3(dirVector.x, 0, dirVector.y);
-        transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
+        if (Quaternion.LookRotation(lookDirection, Vector3.up)!=newRotation)
+        {
+            newRotation=Quaternion.LookRotation(lookDirection, Vector3.up);
+            moveProgress=0;
+        }
         compass.RaiseOnChechedDir(facing);
     }
 }
