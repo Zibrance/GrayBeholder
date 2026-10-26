@@ -7,10 +7,13 @@ public class PlayerController : MonoBehaviour
     private Vector2Int gridPosition;
     private Direction facing = Direction.North;
 
-    public void Initialize(DungeonManager manager, Vector2Int startPosition)
+    private Compass compass;
+
+    public void Initialize(DungeonManager manager, Vector2Int startPosition, Compass uicompass)
     {
         dungeonManager = manager;
         gridPosition = startPosition;
+        compass = uicompass;
         transform.position = new Vector3(gridPosition.x, 0, gridPosition.y);
         UpdateRotation();
     }
@@ -54,6 +57,7 @@ public class PlayerController : MonoBehaviour
         Vector2Int dirVector = DirectionUtils.ToVector(facing);
         Vector3 lookDirection = new Vector3(dirVector.x, 0, dirVector.y);
         transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
+        compass.RaiseOnChechedDir(facing);
     }
 }
 
