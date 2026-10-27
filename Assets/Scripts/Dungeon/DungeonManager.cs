@@ -25,7 +25,7 @@ public class DungeonManager : MonoBehaviour
         var player = Instantiate(playerPrefab);
         player.Initialize(this, entryPoint, FindAnyObjectByType<Compass>());
         sceneCamera.transform.SetParent(player.transform);
-        sceneCamera.transform.localPosition = new Vector3(0, 1f, 0);
+        sceneCamera.transform.localPosition = new Vector3(0, 0.9f, -0.6f);
         sceneCamera.transform.localRotation = Quaternion.identity;
         player.gameObject.SetActive(true);
     }

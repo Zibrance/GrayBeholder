@@ -1,6 +1,5 @@
-using System;
 using UnityEngine;
-using UnityEngine;
+
 public class Character : MonoBehaviour
 {
     public int maxHealth;
