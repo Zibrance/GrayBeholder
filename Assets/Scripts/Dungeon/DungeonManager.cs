@@ -10,13 +10,13 @@ public class DungeonManager : MonoBehaviour
     private DungeonTile[,] dungeonTiles;
     private bool[,] visited;
     private Stack<Vector2Int> stack;
-
     [SerializeField] private DungeonTile dungeonTile;
     [SerializeField] private PlayerController playerPrefab;
     [SerializeField] private Camera sceneCamera;
 
 
     [SerializeField] private bool genRoom, genMaze;
+    [SerializeField] private Transform DungeonParent;
 
 
     void Start()
@@ -25,7 +25,7 @@ public class DungeonManager : MonoBehaviour
         var player = Instantiate(playerPrefab);
         player.Initialize(this, entryPoint, FindAnyObjectByType<Compass>());
         sceneCamera.transform.SetParent(player.transform);
-        sceneCamera.transform.localPosition = new Vector3(0, 0.9f, -0.6f);
+        sceneCamera.transform.localPosition = new Vector3(0, 0.9f, -0.5f);
         sceneCamera.transform.localRotation = Quaternion.identity;
         player.gameObject.SetActive(true);
     }
@@ -96,7 +96,7 @@ public class DungeonManager : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 Vector3 position = new Vector3(x, 0, y);
-                dungeonTiles[x, y] = Instantiate(dungeonTile, position, Quaternion.identity);
+                dungeonTiles[x, y] = Instantiate(dungeonTile, position, Quaternion.identity, DungeonParent);
                 dungeonTiles[x, y].SetType(grid[x, y]);
             }
         }
