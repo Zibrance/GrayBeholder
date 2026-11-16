@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +13,8 @@ public class PlayerController : Character
      float moveProgress=1;
 
     private Compass compass;
+
+    public Camera handsAndWeaponCamara;
 
     public void Initialize(DungeonManager manager, Vector2Int startPosition, Compass uicompass)
     {

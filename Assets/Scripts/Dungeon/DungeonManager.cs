@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Rendering.Universal;
 public class DungeonManager : MonoBehaviour
 {
     public int width = 100;
@@ -24,10 +25,15 @@ public class DungeonManager : MonoBehaviour
         SpawnDungeon();
         var player = Instantiate(playerPrefab);
         player.Initialize(this, entryPoint, FindAnyObjectByType<Compass>());
+        var camaraData = sceneCamera.GetUniversalAdditionalCameraData();
+        camaraData.cameraStack.Add(player.GetComponentInChildren<Camera>());
+
         sceneCamera.transform.SetParent(player.transform);
         sceneCamera.transform.localPosition = new Vector3(0, 0.9f, -0.5f);
         sceneCamera.transform.localRotation = Quaternion.identity;
-        player.gameObject.SetActive(true);
+        sceneCamera.DestroyVolumeStack();
+        sceneCamera.DestroyVolumeStack();
+        player.gameObject.SetActive(true);  
     }
 
     private void SpawnDungeon()
