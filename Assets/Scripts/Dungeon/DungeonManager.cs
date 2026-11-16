@@ -18,6 +18,9 @@ public class DungeonManager : MonoBehaviour
 
     [SerializeField] private bool genRoom, genMaze;
 
+    // Static objects to spawn in the dungeon
+    [SerializeField] private GameObject[] staticObjects;
+
 
     void Start()
     {
@@ -135,6 +138,24 @@ public class DungeonManager : MonoBehaviour
             if (!overlaps)
             {
                 rooms.Add(candidateRoom);
+            }
+
+            // add static objects to the room, when room is larger than 3x3
+            if (staticObjects.Length > 0
+                && candidateRoom.innerBounds.width > 3 && candidateRoom.innerBounds.height > 3)
+            {
+                if (Random.Range(1, 4) == 1) // Randomly choose how many static objects to spawn
+                {
+                    int staticObjectCount = Random.Range(1, 4);
+                    for (int k = 0; k < staticObjectCount; k++)
+                    {
+                        int index = Random.Range(0, staticObjects.Length);
+                        GameObject staticObject = staticObjects[index];
+                        // Spawn the static object in the room
+                        Vector2Int spawnPosition = new(Random.Range(candidateRoom.innerBounds.xMin, candidateRoom.innerBounds.xMax), Random.Range(candidateRoom.innerBounds.yMin, candidateRoom.innerBounds.yMax));
+                        Instantiate(staticObject, new Vector3(spawnPosition.x, 0, spawnPosition.y), Quaternion.identity);
+                    }
+                }
             }
 
             if (rooms.Count >= roomCount)
